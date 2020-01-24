@@ -4,69 +4,12 @@ if(isset($_SESSION["idUser"]))
         else{
           $idid = 0;
         }
-$events = getData();
+//$events = getData();
 ?>
 <center><h2>Пользователь <span style="color:red;" id="input4"></span></h2></center>
 <div class="wrapper">
 
-  <div class="content">
-  	<div class="calendar">
-    
-  </div>
-  <div id="dialog">
-  <form>
-  <div class="success"></div>
-  <div class="form-group">
-    <label for="title">Название события</label>
-    <input type="text" class="form-control" id="title" placeholder="Название события" required>
-  </div>
-  <div class="form-group">
-    <label for="start">Начало события</label>
-    <input type="text" class="form-control datepicker" id="start" placeholder="Дата начала" required>
-  </div>
-  <div class="form-group">
-    <label for="end">Конец события</label>
-    <input type="text" class="form-control datepicker" id="end" placeholder="Дата конца" required>
-  </div>
-  <div class="form-group">
-    <label for="text">Описание события</label>
-    <input type="text" class="form-control" id="text" placeholder="Описание события">
-  </div>
-  <div class="form-group">
-    <label for="mult">Мультимедия</label>
-    <input type="file" multiple="multiple" accept=".txt,image/*">
-<a href="#" class="upload_files button">Загрузить файлы</a>
-<div class="ajax-reply"></div>
-<center><label for="mult" id="pos"></label></center>
-  </div>
-</form>
 </div>
-<div id="dialog1">
-  <form>
-    <div class="success"></div>
-  <div class="form-group">
-    <label for="title">Название события</label>
-    <input type="text" class="form-control" id="titlee" placeholder="Название события" required>
-  </div>
-  <div class="form-group">
-    <label for="start">Начало события</label>
-    <input type="text" class="form-control datepicker" id="starte" placeholder="Дата начала" required>
-  </div>
-  <div class="form-group">
-    <label for="end">Конец события</label>
-    <input type="text" class="form-control datepicker" id="ende" placeholder="Дата конца" required>
-  </div>
-  <div class="form-group">
-    <label for="text">Описание события</label>
-    <input type="text" class="form-control" id="texte" placeholder="Описание события">
-  </div>
-  <div class="form-group">
-    <label for="mult">Мультимедия</label>
-    <center><label for="mult" id="pose"></label></center>
-  </div>
-</form>
-</div>
-  </div>
 
   <div class="footer">
   	<div class="footer-copyright text-center py-3">© 2020 Copyright:

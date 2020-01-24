@@ -4,46 +4,24 @@ if(isset($_SESSION["idUser"]))
         else{
           $idid = 0;
         }
-$kol=getCount();
-$events = getData();
+//$kol=getCount();
+//$events = getData();
 ?>
 <div class="wrapper">
 
   <div class="contentt">
 
+
+
   </div>
 
+</div>
   <div class="footer">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
     <a href="http://www.volpi.ru/" target="_blank"> Разработано в ВПИ</a>
     Иванов В.
     </div>
 
-</div>
-<div id="dialog2">
-  <form>
-    <div class="success"></div>
-  <div class="form-group">
-    <label for="title">Название события</label>
-    <input type="text" class="form-control" id="title1" placeholder="Название события" required>
-  </div>
-  <div class="form-group">
-    <label for="start">Начало события</label>
-    <input type="text" class="form-control datepicker" id="start1" placeholder="Дата начала" required>
-  </div>
-  <div class="form-group">
-    <label for="end">Конец события</label>
-    <input type="text" class="form-control datepicker" id="end1" placeholder="Дата конца" required>
-  </div>
-  <div class="form-group">
-    <label for="text">Описание события</label>
-    <input type="text" class="form-control" id="text1" placeholder="Описание события">
-  </div>
-  <div class="form-group">
-    <label for="mult">Мультимедия</label>
-    <center><label for="mult" id="pos1"></label></center>
-  </div>
-</form>
 </div>
 <div class="modal fade login" id="loginModal">
 	<div class="modal-dialog login animated">
