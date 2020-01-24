@@ -2,10 +2,10 @@
 	<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="">Calendar.ru</a>
+      <a class="navbar-brand" href="http://online.ru/">Online.ru</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="http://calendar.ru/">Главная</a></li>
+      <li class="active"><a href="http://online.ru/">Главная</a></li>
       <li><a href="includes/about.php">О системе</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">

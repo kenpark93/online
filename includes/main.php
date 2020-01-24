@@ -15,7 +15,7 @@ $events = getData();
 
   <div class="footer">
   	<div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href=""> ВПИ. Тихов Д.С.</a></div>
+    <a href="http://www.volpi.ru/" target="_blank"> ВПИ. Иванов В.</a></div>
   </div>
 
 </div>

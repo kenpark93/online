@@ -19,5 +19,5 @@
     <script src="http://online.ru/js/main.js"></script>
     <script src="http://online.ru/js/ru.js"></script>
     <script src="http://online.ru/js/jquery-ui.js"></script>
-	<title>Система формирования мультимедийного календаря событий</title>
+	<title>Система online-голосования</title>
 </head>
