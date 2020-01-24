@@ -14,9 +14,10 @@ $events = getData();
   </div>
 
   <div class="footer">
-  	<div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="http://www.volpi.ru/" target="_blank"> ВПИ. Иванов В.</a></div>
-  </div>
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="http://www.volpi.ru/" target="_blank"> Разработано в ВПИ</a>
+    Иванов В.
+    </div>
 
 </div>
 <div id="dialog2">

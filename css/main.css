@@ -5,6 +5,9 @@
 html,
 body {
   height: 94%;
+  width: 1000px;
+  margin: auto;
+  background-color: #e3eefa;
 }
 .wrapper {
   position: relative;
