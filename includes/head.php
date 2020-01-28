@@ -14,10 +14,6 @@
     <script src="http://online.ru/js/jquery.form.js"></script>
     <script src="http://online.ru/js/bootstrap.min.js"></script>
     <script src="http://online.ru/js/394.js"></script>   
-    <script src="http://online.ru/js/moment.min.js"></script>
-    <script src="http://online.ru/js/fullcalendar.js"></script>
-    <script src="http://online.ru/js/main.js"></script>
-    <script src="http://online.ru/js/ru.js"></script>
     <script src="http://online.ru/js/jquery-ui.js"></script>
 	<title>Система online-голосования</title>
 </head>

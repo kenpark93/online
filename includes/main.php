@@ -11,16 +11,64 @@ if(isset($_SESSION["idUser"]))
 
   <div class="contentt">
 
+    <div class="card gold">
+      <div class="photo"><img src="../uploads/1.jpg"></div>
+      <div class="txt">
+        <div class="name">Иванов Иван Иванович</div>
+        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
+        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
+      </div>
+      <div class="pos">1</div>
+    </div>
 
+    <div class="card silver">
+      <div class="photo"><img src="../uploads/1.jpg"></div>
+      <div class="txt">
+        <div class="name">Иванов Иван Иванович</div>
+        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
+        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
+      </div>
+      <div class="pos">2</div>
+    </div>
+
+    <div class="card bronze">
+      <div class="photo"><img src="../uploads/1.jpg"></div>
+      <div class="txt">
+        <div class="name">Иванов Иван Иванович</div>
+        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
+        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
+      </div>
+      <div class="pos">3</div>
+    </div>
+
+    <div class="card">
+      <div class="photo"><img src="../uploads/1.jpg"></div>
+      <div class="txt">
+        <div class="name">Иванов Иван Иванович</div>
+        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
+        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
+      </div>
+      <div class="pos">4</div>
+    </div>
+
+    <div class="card">
+      <div class="photo"><img src="../uploads/1.jpg"></div>
+      <div class="txt">
+        <div class="name">Иванов Иван Иванович</div>
+        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
+        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
+      </div>
+      <div class="pos">5</div>
+    </div>
 
   </div>
 
 </div>
+
   <div class="footer">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="http://www.volpi.ru/" target="_blank"> Разработано в ВПИ</a>
-    Иванов В.
-    </div>
+    <a href="http://www.volpi.ru/" target="_blank"> Разработано в ВПИ</a> Иванов В.
+  </div>
 
 </div>
 <div class="modal fade login" id="loginModal">
@@ -71,91 +119,6 @@ if(isset($_SESSION["idUser"]))
 	</div>
 </div>
 <script type="text/javascript">
-  var events = <?php echo $events ?>;
-  kol = <?php echo $kol ?>;
-  $(document).ready(function(){
-      getKol();
-    });
-  var getKol = function() {
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function(){
-				if (xhttp.readyState==4 && xhttp.status==200) {
-					try {
-						var response = $.parseJSON(xhttp.responseText);
-						if(response!=null) {
-							for(i=response.length-1;i>=0;i--) {
-								var r = $('<center><h3>Календарь пользователя <span style="color:red;" id="input4">'+response[i]["login"]+'</span></h3></center>');
-								$(".contentt").append(r);
-								var r = $('<div id="calendar'+response[i]["id"]+'"></div>');
-								$(".contentt").append(r);
-								var eve = getDa(response[i]["id"]);
-								var r = $('<br>');
-								$(".contentt").append(r);
-							}
-							
-						} else {
-
-						}
-					} catch (e) {
-
-					}
-					
-				}
-			};
-				obj = JSON.stringify({action:"getKol"});
-				xhttp.open("POST", '../inc/ajax.php', true);
-				xhttp.setRequestHeader("Content-Type","application/json");
-				xhttp.send(obj);
-		};
-
-var getDa = function(id) {
-	console.log(id);
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function(){
-        if (xhttp.readyState==4 && xhttp.status==200) {
-            var response = $.parseJSON(xhttp.responseText);
-            
-            if(response!=null) {
-              $('#calendar' + id).fullCalendar({
-    								eventSources: [
-    								{
-      								events : response,
-      								color : '#1AA3A9',
-      								textColor : '#fff',
-    								}
-  										],
-    								height: 450,
-                    eventClick: function(event) {
-                      console.log(event);
-                      $('#title1').val(event.title);
-                      $('#start1').val(event[1]);
-                      $('#end1').val(event[2]);
-                      $('#text1').val(event.description);
-                      $('#mult1').val(event.mult);
-                      event_id = event.id;
-                      event_ti = event.title;
-                      event_st = event[1];
-                      event_en = event[2];
-                      event_de = event.description;
-                      event_mu = event.mult;
-                      if (event_mu) {
-                        img2 = new Image (200,200);
-                        img2.src="./uploads/" + event_mu;
-                        $("#pos1").html('');
-                        $("#pos1").append(img2);}
-                      $('#dialog2').dialog('open');
-                    }
-  								});
-            } else {
-              console.log(1111);
-            }        
-        }
-      };
-        obj = JSON.stringify({action:"getda",id:id});
-        xhttp.open("POST", '../inc/ajax.php', true);
-        xhttp.setRequestHeader("Content-Type","application/json");
-        xhttp.send(obj);
-    };
 
 	function regAjax(){
         login = $("#reg_login").val().replace(/(<.*?>)/g, "");
