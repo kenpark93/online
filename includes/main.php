@@ -4,52 +4,61 @@ if(isset($_SESSION["idUser"]))
         else{
           $idid = 0;
         }
-//$kol=getCount();
-//$events = getData();
+$keyf = 3;
+$kon=getKon($keyf);
 ?>
 <div class="wrapper">
 
   <div class="contentt">
 
-    <div class="card gold">
-      <div class="photo"><img src="../uploads/1.jpg"></div>
+    <center><h1>Список конкурсантов с набранными голосами</h1></center>
+
+    <?
+    $posi = 1;
+    $color = "";
+    foreach($kon as $card)
+     {
+
+      if ($posi == 1){
+        $color = "gold";
+      }
+
+      if ($posi == 2){
+        $color = "silver";
+      }
+
+      if ($posi == 3){
+        $color = "bronze";
+      }
+
+      if ($posi == 4){
+        $color = "";
+      }
+
+      if (file_exists("../uploads/".$card["id"].".jpg")) {
+        $photo = $card["id"];
+      }
+      else{
+        $photo = 0;
+      }
+
+      echo <<<NITEM
+
+      <div class="card {$color}">
+      <div class="photo"><img src="../uploads/{$card["id"]}.jpg"></div>
       <div class="txt">
-        <div class="name">Иванов Иван Иванович</div>
-        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
-        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
+        <div class="name">{$card["name"]}</div>
+        <div class="disc">{$card["text"]}</div>
+        <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: {$card["kolgol"]}</div>
       </div>
-      <div class="pos">1</div>
+      <div class="pos">{$posi}</div>
     </div>
 
-    <div class="card silver">
-      <div class="photo"><img src="../uploads/1.jpg"></div>
-      <div class="txt">
-        <div class="name">Иванов Иван Иванович</div>
-        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
-        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
-      </div>
-      <div class="pos">2</div>
-    </div>
+NITEM;
+      $posi = $posi + 1;
+     }
 
-    <div class="card bronze">
-      <div class="photo"><img src="../uploads/1.jpg"></div>
-      <div class="txt">
-        <div class="name">Иванов Иван Иванович</div>
-        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
-        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
-      </div>
-      <div class="pos">3</div>
-    </div>
-
-    <div class="card">
-      <div class="photo"><img src="../uploads/1.jpg"></div>
-      <div class="txt">
-        <div class="name">Иванов Иван Иванович</div>
-        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
-        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
-      </div>
-      <div class="pos">4</div>
-    </div>
+    ?>
 
   </div>
 

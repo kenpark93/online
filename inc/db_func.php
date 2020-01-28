@@ -7,32 +7,36 @@ function connect_db($db_param)
     return $conn;
 }
 
-function getData()
+function getKon($keyf)
 {
+
+    if ($keyf == 1)
+        $filter = "name asc";
+    if ($keyf == 2)
+        $filter = "oth desc";
+    if ($keyf == 3)
+        $filter = "kolgol desc";
+
+    {
     global $db_param;
     $conn = connect_db($db_param);
-
     if ($conn != null) {
-        if(!($stmt=$conn->prepare("SELECT id, title, description, start, end, mult FROM sub where user = '$_SESSION[idUser]'"))) {
-            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
-        }
-        if(!$stmt->execute()) {
-            echo "Не удалось выполнить запрос: (" . $stmt->errno . ") " . $stmt->error;
-        }
-        if(!($res=$stmt->get_result())) {
-            echo "Не удалось получить результат: (" . $stmt->errno . ") " . $stmt->error;
-        } else {
-            if($res>0){
-                $gradInfo=array();
-                while($bi=mysqli_fetch_array($res))
-                    $gradInfo[]=$bi;                
-            } else {
-                return null;
-            }
-        }
-        $stmt->close();
-        return json_encode($gradInfo);
+        $query = "SELECT id, name, text, oth, kolgol FROM konkurs order by $filter limit 5";
+        $result = mysqli_query($conn, $query);
+    if ( mysqli_num_rows($result) > 0) {
+        $housesInfo=array();
+        while($hi=mysqli_fetch_array($result))
+           $housesInfo[]=$hi;
+        mysqli_free_result($result);
+        return $housesInfo;}
+
+
+      return null;
+
     }
+    return null;
+
+}
 }
 
 function getCount()

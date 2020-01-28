@@ -5,7 +5,13 @@
       <a class="navbar-brand" href="http://online.ru/">Online.ru</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="http://online.ru/">Главная</a></li>
+      <li class="active"><a href="http://online.ru/">Результат голосования</a></li>
+      <?
+        if(isset($_SESSION["idUser"]))
+        {
+          echo "<li><a href='includes/spisok.php'>Список конкурсантов</a></li>";
+        }
+      ?>
       <li><a href="includes/about.php">О системе</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">

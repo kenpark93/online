@@ -1,3 +1,14 @@
+<? 
+require_once("../inc/db_func.php");
+require_once("../inc/config.php");
+if(isset($_SESSION["idUser"]))
+          {$idid = $_SESSION["idUser"];}
+        else{
+          $idid = 0;
+        }
+$keyf = 1;
+$kon=getKon($keyf);
+?>
 <!DOCTYPE html>
 <html>
 <?
@@ -15,10 +26,10 @@
       <?
         if(isset($_SESSION["idUser"]))
         {
-          echo "<li><a href='includes/spisok.php'>Список конкурсантов</a></li>";
+          echo "<li class='active'><a href='includes/spisok.php'>Список конкурсантов</a></li>";
         }
       ?>
-      <li class="active"><a href="includes/about.php">О системе</a></li>
+      <li><a href="about.php">О системе</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <?
@@ -38,12 +49,39 @@
 <div class="wrapper">
 
   <div class="content">
-<center><h1>"Система online-голосования"</h1></center>
-<h3>Разработать Web-приложение, предоставляющее возможность определять победителя по результатам online-голосования пользователей. Предусмотреть две роли: администратор и посетитель.<br><br>
-Администратор должен иметь возможность редактировать список конкурсантов с описанием и мультимедийным оформлением.<br><br>
-Посетителям должна предоставляться возможность просматривать информацию о конкурсантах и голосовать за понравившегося.<br><br>
-По результатам голосования в конце дня система должна формировать список конкурсантов с набранными голосами. Предоставить возможность сортировки списка по различным критериям (по алфавиту, порядку добавления, текущему рейтингу).<br><br>
-Предусмотреть функцию подавления накручивания счетчика одним и тем же посетителем, не давая ему возможность голосовать чаще, чем один раз в сутки.</h3>
+<center><h1>Список всех конкурсантов</h1>
+<div id="1" class="fil filiz">по алфавиту</div>
+<div id="2" class="fil">по порядку добавления</div>
+<div id="3" class="fil">по текущему рейтингу</div></center>
+<?
+    foreach($kon as $card)
+     {
+
+      if (file_exists("../uploads/".$card["id"].".jpg")) {
+        $photo = $card["id"];
+      }
+      else{
+        $photo = 0;
+      }
+
+      echo <<<NITEM
+
+      <div class="card">
+      <div class="photo"><img src="../uploads/{$card["id"]}.jpg"></div>
+      <div class="txt">
+        <div class="name">{$card["name"]}</div>
+        <div class="disc">{$card["text"]}</div>
+        <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: {$card["kolgol"]}</div>
+      </div>
+      <div class="gol">Голосовать!</div>
+    </div>
+
+NITEM;
+      $posi = $posi + 1;
+     }
+
+    ?>
+
   </div>
 
 <div class="footer">
@@ -100,3 +138,13 @@
 </div>
 </body>
 </html>
+
+<script type="text/javascript">
+  $(function(){
+
+    $('#2').on('click',function(){ 
+      $('#1').removeClass("filiz");
+      $('#2').addClass("filiz");
+    });
+  });
+</script>
