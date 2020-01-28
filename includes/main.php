@@ -51,16 +51,6 @@ if(isset($_SESSION["idUser"]))
       <div class="pos">4</div>
     </div>
 
-    <div class="card">
-      <div class="photo"><img src="../uploads/1.jpg"></div>
-      <div class="txt">
-        <div class="name">Иванов Иван Иванович</div>
-        <div class="disc">Идейные соображения высшего порядка, а также дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке</div>
-        <div class="data">Дата регистрации: 01.02.2020 Количество голосов: 10</div>
-      </div>
-      <div class="pos">5</div>
-    </div>
-
   </div>
 
 </div>
