@@ -6,6 +6,10 @@ $json = json_decode(stripslashes(file_get_contents("php://input")));
 $action=$json->action;
 $myClass = new myClass();
 
+if($action=="getSpis"){
+	$response = getKon1($json);
+	echo json_encode($response);
+}
 if($action=="reg"){
 	$response = $myClass->saveUser($json);
 	echo json_encode($response);
