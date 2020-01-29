@@ -72,6 +72,39 @@ function getKon1($json)
 }
 }
 
+function golos($json)
+{
+    $keyf=$json->x;
+
+    if ($keyf == 1)
+        $filter = "name asc";
+    if ($keyf == 2)
+        $filter = "oth desc";
+    if ($keyf == 3)
+        $filter = "kolgol desc";
+
+    {
+    global $db_param;
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+        $query = "SELECT id, name, text, oth, kolgol FROM konkurs order by $filter limit 5";
+        $result = mysqli_query($conn, $query);
+    if ( mysqli_num_rows($result) > 0) {
+        $housesInfo=array();
+        while($hi=mysqli_fetch_array($result))
+           $housesInfo[]=$hi;
+        mysqli_free_result($result);
+        return $housesInfo;}
+
+
+      return null;
+
+    }
+    return null;
+
+}
+}
+
 function getCount()
 {
     global $db_param;

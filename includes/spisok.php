@@ -74,7 +74,7 @@ $kon=getKon($keyf);
         <div class="disc">{$card["text"]}</div>
         <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: {$card["kolgol"]}</div>
       </div>
-      <div class="gol">Голосовать!</div>
+      <div class="gol" id="{$card["id"]}">Голосовать!</div>
     </div>
 
 NITEM;
@@ -143,13 +143,15 @@ NITEM;
 <script type="text/javascript">
   $(function(){
 
+    var qwe = 1;
+
     $('#2').on('click',function(){ 
       $('#1').removeClass("filiz");
       $('#3').removeClass("filiz");
       $('#2').addClass("filiz");
       $('#konn').empty();
-      console.log(2);
-      getSpisok(2);
+      qwe = 2;
+      getSpisok(qwe);
     });
 
     $('#1').on('click',function(){ 
@@ -157,8 +159,8 @@ NITEM;
       $('#3').removeClass("filiz");
       $('#1').addClass("filiz");
       $('#konn').empty();
-      console.log(1);
-      getSpisok(1);
+      qwe = 1;
+      getSpisok(qwe);
     });
 
     $('#3').on('click',function(){ 
@@ -166,8 +168,14 @@ NITEM;
       $('#2').removeClass("filiz");
       $('#3').addClass("filiz");
       $('#konn').empty();
-      console.log(3);
-      getSpisok(3);
+      qwe = 3;
+      getSpisok(qwe);
+    });
+
+    $('.gol').on('click',function(){ 
+      var idi = $(this).attr('id');
+      goloS(idi);
+      getSpisok(qwe);
     });
   });
 
@@ -178,13 +186,26 @@ NITEM;
           console.log(xhttp.responseText);
           var response = $.parseJSON(xhttp.responseText);
           for(i=0;i<response.length;i++) {
-            var r = $('<div class="card"><div class="photo"><img src="../uploads/'+response[i]["id"]+'.jpg"></div><div class="txt"><div class="name">'+response[i]["name"]+'</div><div class="disc">'+response[i]["text"]+'</div><div class="data">Дата регистрации: '+response[i]["oth"]+' Количество голосов: '+response[i]["kolgol"]+'</div></div><div class="gol">Голосовать!</div></div>');
+            var r = $('<div class="card"><div class="photo"><img src="../uploads/'+response[i]["id"]+'.jpg"></div><div class="txt"><div class="name">'+response[i]["name"]+'</div><div class="disc">'+response[i]["text"]+'</div><div class="data">Дата регистрации: '+response[i]["oth"]+' Количество голосов: '+response[i]["kolgol"]+'</div></div><div class="gol" id="{$card["id"]}">Голосовать!</div></div>');
             $("#konn").append(r);
           }
           
         }
       };
       obj = JSON.stringify({x:param,action:"getSpis"});
+      xhttp.open("POST", '../inc/ajax.php', true);
+      xhttp.setRequestHeader("Content-Type","application/json");
+      xhttp.send(obj);
+  }
+
+  var goloS = function(param) {
+    var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if (xhttp.readyState==4 && xhttp.status==200) {
+          console.log(xhttp.responseText);
+        }
+      };
+      obj = JSON.stringify({x:param,action:"golos"});
       xhttp.open("POST", '../inc/ajax.php', true);
       xhttp.setRequestHeader("Content-Type","application/json");
       xhttp.send(obj);

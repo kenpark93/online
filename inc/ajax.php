@@ -10,6 +10,12 @@ if($action=="getSpis"){
 	$response = getKon1($json);
 	echo json_encode($response);
 }
+if($action=="golos"){
+	$response = golos($json);
+	echo json_encode($response);
+}
+
+
 if($action=="reg"){
 	$response = $myClass->saveUser($json);
 	echo json_encode($response);
