@@ -205,4 +205,25 @@ NITEM;
       xhttp.setRequestHeader("Content-Type","application/json");
       xhttp.send(obj);
   }
+
+  $("#logout").on('click',function(){
+            location.reload('http://online.ru/');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (xhttp.readyState==4 && xhttp.status==200) {
+                    var response = xhttp.responseText;                  
+                    if(response=="done") {
+                        $('.error').addClass('alert alert-danger').html("Вы вышли из своего кабинета!");
+                        setTimeout(timeoutFunc,2000);
+                        prs = true;
+                    }
+                    else
+                        console.log(222);
+                }
+            };
+                obj = JSON.stringify({action:"logout"});
+                xhttp.open("POST", '../inc/ajax.php', true);
+                xhttp.setRequestHeader("Content-Type","application/json");
+                xhttp.send(obj);
+    }); 
 </script>

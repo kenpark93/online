@@ -10,6 +10,10 @@
         if(isset($_SESSION["idUser"]))
         {
           echo "<li><a href='includes/spisok.php'>Список конкурсантов</a></li>";
+          if($_SESSION["idUser"] == 1)
+            {
+              echo "<li><a href='includes/panel.php'>Добавить конкурсанта</a></li>";
+            }
         }
       ?>
       <li><a href="includes/about.php">О системе</a></li>
