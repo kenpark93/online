@@ -14,12 +14,17 @@ if($action=="golos"){
 	$response = golos($json);
 	echo json_encode($response);
 }
-
-
-if($action=="reg"){
-	$response = $myClass->saveUser($json);
+if($action=="check"){
+	$response = checkUser($json);
 	echo json_encode($response);
 }
+if($action=="reg"){
+	$response = saveUser($json);
+	echo json_encode($response);
+}
+
+
+
 if($action=="add"){
 	$response = $myClass->addZap($json);
 	echo json_encode($response);
@@ -63,9 +68,5 @@ if($action=="opens"){
 if($action=="logout"){
 	unset($_SESSION["idUser"]);
 	echo "done";
-}
-if($action=="check"){
-	$response = $myClass->checkUser($json);
-	echo json_encode($response);
 }
 ?>

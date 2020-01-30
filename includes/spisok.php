@@ -26,7 +26,7 @@ $kon=getKon($keyf);
       <?
         if(isset($_SESSION["idUser"]))
         {
-          echo "<li class='active'><a href='includes/spisok.php'>Список конкурсантов</a></li>";
+          echo "<li class='active'><a href='spisok.php'>Список конкурсантов</a></li>";
         }
       ?>
       <li><a href="about.php">О системе</a></li>
@@ -72,7 +72,7 @@ $kon=getKon($keyf);
       <div class="txt">
         <div class="name">{$card["name"]}</div>
         <div class="disc">{$card["text"]}</div>
-        <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: {$card["kolgol"]}</div>
+        <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: <b>{$card["kolgol"]}</b></div>
       </div>
       <div class="gol" id="{$card["id"]}">Голосовать!</div>
     </div>
@@ -172,9 +172,10 @@ NITEM;
       getSpisok(qwe);
     });
 
-    $('.gol').on('click',function(){ 
+    $('body').on('click','.gol',function(){ 
       var idi = $(this).attr('id');
       goloS(idi);
+      $('#konn').empty();
       getSpisok(qwe);
     });
   });
@@ -183,10 +184,9 @@ NITEM;
     var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function(){
         if (xhttp.readyState==4 && xhttp.status==200) {
-          console.log(xhttp.responseText);
           var response = $.parseJSON(xhttp.responseText);
           for(i=0;i<response.length;i++) {
-            var r = $('<div class="card"><div class="photo"><img src="../uploads/'+response[i]["id"]+'.jpg"></div><div class="txt"><div class="name">'+response[i]["name"]+'</div><div class="disc">'+response[i]["text"]+'</div><div class="data">Дата регистрации: '+response[i]["oth"]+' Количество голосов: '+response[i]["kolgol"]+'</div></div><div class="gol" id="{$card["id"]}">Голосовать!</div></div>');
+            var r = $('<div class="card"><div class="photo"><img src="../uploads/'+response[i]["id"]+'.jpg"></div><div class="txt"><div class="name">'+response[i]["name"]+'</div><div class="disc">'+response[i]["text"]+'</div><div class="data">Дата регистрации: '+response[i]["oth"]+' Количество голосов: <b>'+response[i]["kolgol"]+'</b></div></div><div class="gol" id="'+response[i]["id"]+'">Голосовать!</div></div>');
             $("#konn").append(r);
           }
           
@@ -200,11 +200,6 @@ NITEM;
 
   var goloS = function(param) {
     var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function(){
-        if (xhttp.readyState==4 && xhttp.status==200) {
-          console.log(xhttp.responseText);
-        }
-      };
       obj = JSON.stringify({x:param,action:"golos"});
       xhttp.open("POST", '../inc/ajax.php', true);
       xhttp.setRequestHeader("Content-Type","application/json");

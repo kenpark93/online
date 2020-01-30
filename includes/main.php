@@ -92,7 +92,7 @@ NITEM;
 				</div>
 				<div class="box">
 					<div class="content registerBox" style="display:none;">
-						<div class="form">
+						<div class="form" id="regreg">
 							<form method="" html="{:multipart=>true}" data-remote="true" action="" accept-charset="UTF-8">
 								<input id="reg_login" class="form-control" type="text" placeholder="Login" name="login" required="required">
 								<input id="reg_password" class="form-control" type="password" placeholder="Пароль" name="password" required="required">
@@ -186,6 +186,7 @@ var checkUser = function() {
         var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function(){
                 if (xhttp.readyState==4 && xhttp.status==200) {
+                  console.log(xhttp.responseText);
                     var response = $.parseJSON(xhttp.responseText);
                     if(response==null || response.length<5) {
                         regUser();
@@ -216,11 +217,10 @@ var checkUser = function() {
 					var response = xhttp.responseText;//$.parseJSON(xhttp.responseText);
 					if(response) {
 						$('.error').addClass('alert alert-success').html("Вы зарегистрировались!");
-             $('input[type="password"]').val('');
+             $('#regreg').empty();
              setTimeout( function(){ 
                 $('#loginModal .modal-dialog').removeClass('shake'); 
     }, 1000 ); 
-             location.reload();
 					} else {
 						$('.error').addClass('alert alert-danger').html("Ошибка регистрации!");
              $('input[type="password"]').val('');

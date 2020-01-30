@@ -74,46 +74,38 @@ function getKon1($json)
 
 function golos($json)
 {
-    $keyf=$json->x;
 
-    if ($keyf == 1)
-        $filter = "name asc";
-    if ($keyf == 2)
-        $filter = "oth desc";
-    if ($keyf == 3)
-        $filter = "kolgol desc";
-
-    {
     global $db_param;
+
     $conn = connect_db($db_param);
     if ($conn != null) {
-        $query = "SELECT id, name, text, oth, kolgol FROM konkurs order by $filter limit 5";
-        $result = mysqli_query($conn, $query);
-    if ( mysqli_num_rows($result) > 0) {
-        $housesInfo=array();
-        while($hi=mysqli_fetch_array($result))
-           $housesInfo[]=$hi;
-        mysqli_free_result($result);
-        return $housesInfo;}
-
-
-      return null;
-
+        if(!($stmt=$conn->prepare("update konkurs set kolgol = kolgol + 1 where id=?"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('d',$i)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $i=$json->x;  
+        $res =  $stmt->execute();       
+        $stmt->close();
+        return $res;
     }
-    return null;
-
-}
+    return false;
 }
 
-function getCount()
+function checkUser($json)
 {
     global $db_param;
     $conn = connect_db($db_param);
 
     if ($conn != null) {
-        if(!($stmt=$conn->prepare("SELECT id FROM users"))) {
+        if(!($stmt=$conn->prepare("SELECT id FROM users where login=?"))) {
             echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
         }
+        if(!$stmt->bind_param('s',$l)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $l=$json->log;
         if(!$stmt->execute()) {
             echo "Не удалось выполнить запрос: (" . $stmt->errno . ") " . $stmt->error;
         }
@@ -133,6 +125,30 @@ function getCount()
     }
 
 }
+
+function saveUser($json)
+{
+    global $db_param;
+
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+        if(!($stmt=$conn->prepare("insert into users (login,pass,golos) values(?,?,1)"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('ss',$a,$b)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $a=$json->log;
+        $b=$json->pas;  
+        $res =  $stmt->execute();       
+        $stmt->close();
+        return $res;
+    }
+    return false;
+
+}
+
+
 
 class myClass {
 
@@ -236,28 +252,6 @@ function getKol()
         $stmt->close();
         return json_encode($gradInfo);
     }
-}
-
-function saveUser($json)
-{
-    global $db_param;
-
-    $conn = connect_db($db_param);
-    if ($conn != null) {
-		if(!($stmt=$conn->prepare("insert into users (login,pass) values(?,?)"))) {
-            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
-        }
-		if(!$stmt->bind_param('ss',$a,$b)) {
-            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
-        }
-		$a=$json->log;
-		$b=$json->pas;	
-       	$res = 	$stmt->execute();		
-		$stmt->close();
-		return $res;
-    }
-    return false;
-
 }
 
 function addZap($json)
@@ -401,40 +395,6 @@ function logUser($json)
 		$stmt->close();
 		return json_encode($gradInfo);
 }
-}
-
-function checkUser($json)
-{
-    global $db_param;
-    $conn = connect_db($db_param);
-
-    if ($conn != null) {
-		if(!($stmt=$conn->prepare("SELECT id FROM users where login=?"))) {
-            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
-        }
-		if(!$stmt->bind_param('s',$l)) {
-            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
-        }
-		$l=$json->log;
-		if(!$stmt->execute()) {
-            echo "Не удалось выполнить запрос: (" . $stmt->errno . ") " . $stmt->error;
-        }
-		if(!($res=$stmt->get_result())) {
-            echo "Не удалось получить результат: (" . $stmt->errno . ") " . $stmt->error;
-        } else {
-            if($res>0){
-                $gradInfo=array();
-				while($bi=mysqli_fetch_array($res))
-					$gradInfo[]=$bi;				
-            } else {
-                return null;
-            }
-        }
-		$stmt->close();
-		return json_encode($gradInfo);
-    }
-    //return null;
-
 }
 
 function getttData($json)

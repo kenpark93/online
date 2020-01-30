@@ -1,3 +1,12 @@
+<? 
+require_once("../inc/db_func.php");
+require_once("../inc/config.php");
+if(isset($_SESSION["idUser"]))
+          {$idid = $_SESSION["idUser"];}
+        else{
+          $idid = 0;
+        }
+?>
 <!DOCTYPE html>
 <html>
 <?
@@ -15,10 +24,10 @@
       <?
         if(isset($_SESSION["idUser"]))
         {
-          echo "<li><a href='includes/spisok.php'>Список конкурсантов</a></li>";
+          echo "<li><a href='spisok.php'>Список конкурсантов</a></li>";
         }
       ?>
-      <li class="active"><a href="includes/about.php">О системе</a></li>
+      <li class="active"><a href="about.php">О системе</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <?
