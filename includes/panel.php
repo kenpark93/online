@@ -173,6 +173,39 @@ NITEM;
   </div>
 </div>
 
+<div class="modal fade" id="RedKonModal">
+  <div class="modal-dialog login animated">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Редактировать конкурсанта</h4>
+      </div>
+      <div class="modal-body"> 
+        <div class="box">
+          <div class="content">
+            <div class="error"></div>
+            <div class="form">
+              <form method="" html="{:multipart=>true}" data-remote="true" action="" accept-charset="UTF-8">
+                <input id="nameR" class="form-control" type="text" placeholder="Имя" name="name" required="required">
+                <textarea rows="3" id="descR" class="form-control" type="text" placeholder="Описание" name="desc" required="required"></textarea>
+                <center><input id="dateR" type="date" placeholder="Дата добавления" required="required" style="margin-top: 5px;"></center>
+                <div class="form-group">
+                  <label for="mult">Мультимедия</label>
+                  <input type="file" multiple="multiple" accept=".txt,image/*">
+                  <a href="#" class="upload_files button">Загрузить файлы</a>
+                  <div class="ajax-reply"></div>
+                  <center><label for="mult" id="pos"></label></center>
+                </div>
+                <input class="btn btn-default btn-login" type="button" value="Добавить" onclick="AddKonBut()" style="margin-top: 5px;">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 </body>
 </html>
@@ -191,6 +224,19 @@ NITEM;
       delKon(idi);
       $('#konn').empty();
       getSpisok(1);
+    });
+
+    $('.red').on('click',function(){ 
+      var idi = $(this).attr('id');
+      name = $("#name").val().replace(/(<.*?>)/g, "");
+      desc = $("#desc").val().replace(/(<.*?>)/g, "");
+      date = $("#date").val();
+      $("#nameR").val(name);
+      $("#descR").val(desc);
+      $("#dateR").val(date);
+      setTimeout(function(){
+        $('#RedKonModal').modal('show');    
+      }, 230);
     });
 
   });

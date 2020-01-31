@@ -25,6 +25,10 @@ function showAddKon(){
     $('#AddKonModal').fadeIn('fast'); 
 }
 
+function showRedKon(){
+    $('#RedKonModal').fadeIn('fast'); 
+}
+
 function openLoginModal(){
     showLoginForm();
     setTimeout(function(){
