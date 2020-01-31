@@ -45,7 +45,7 @@ $kon=getKon($keyf);
       echo <<<NITEM
 
       <div class="card {$color}">
-      <div class="photo"><img src="../uploads/{$card["id"]}.jpg"></div>
+      <div class="photo"><img src="includes/uploads/{$card["id"]}.jpg"></div>
       <div class="txt">
         <div class="name">{$card["name"]}</div>
         <div class="disc">{$card["text"]}</div>

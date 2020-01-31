@@ -10,6 +10,10 @@ if($action=="getSpis"){
 	$response = getKon1($json);
 	echo json_encode($response);
 }
+if($action=="getSpis1"){
+	$response = getKon2($json);
+	echo json_encode($response);
+}
 if($action=="golos"){
 	$response = golos($json);
 	echo json_encode($response);
@@ -22,13 +26,17 @@ if($action=="reg"){
 	$response = saveUser($json);
 	echo json_encode($response);
 }
-
-
-
 if($action=="add"){
-	$response = $myClass->addZap($json);
+	$response = addZap($json);
 	echo json_encode($response);
 }
+if($action=="del"){
+	$response = delKu($json);
+	echo $response;
+}
+
+
+
 if($action=="zap"){
 	$response = $myClass->zapUser($json);
 	echo $response;
@@ -39,10 +47,6 @@ if($action=="log"){
 }
 if($action=="edit"){
 	$response = $myClass->editEv($json);
-	echo $response;
-}
-if($action=="del"){
-	$response = $myClass->delEv($json);
 	echo $response;
 }
 if($action=="getname"){

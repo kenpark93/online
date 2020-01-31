@@ -7,7 +7,7 @@ if(isset($_SESSION["idUser"]))
           $idid = 0;
         }
 $keyf = 1;
-$kon=getKon($keyf);
+$kon=getKonAd($keyf);
 ?>
 <!DOCTYPE html>
 <html>
@@ -54,15 +54,13 @@ $kon=getKon($keyf);
 
   <div class="content">
 <center><h1>Работа с конкурсантами</h1>
-<div id="1" class="fil filiz">по алфавиту</div>
-<div id="2" class="fil">по порядку добавления</div>
-<div id="3" class="fil">по текущему рейтингу</div></center>
+<div style="width: 90%;" class="fil" id="add">Добавить конкурсанта</div></center>
 <div id="konn">
 <?
     foreach($kon as $card)
      {
 
-      if (file_exists("../uploads/".$card["id"].".jpg")) {
+      if (file_exists("uploads/".$card["id"].".jpg")) {
         $photo = $card["id"];
       }
       else{
@@ -72,13 +70,14 @@ $kon=getKon($keyf);
       echo <<<NITEM
 
       <div class="card">
-      <div class="photo"><img src="../uploads/{$card["id"]}.jpg"></div>
+      <div class="photo"><img src="uploads/{$card["id"]}.jpg"></div>
       <div class="txt">
         <div class="name">{$card["name"]}</div>
         <div class="disc">{$card["text"]}</div>
         <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: <b>{$card["kolgol"]}</b></div>
       </div>
-      <div class="gol" id="{$card["id"]}">Голосовать!</div>
+      <div class="red" id="{$card["id"]}">Редактировать</div>
+      <div class="del" id="{$card["id"]}">Удалить</div>
     </div>
 
 NITEM;
@@ -140,6 +139,40 @@ NITEM;
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="AddKonModal">
+  <div class="modal-dialog login animated">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Добавить конкурсанта</h4>
+      </div>
+      <div class="modal-body"> 
+        <div class="box">
+          <div class="content">
+            <div class="error"></div>
+            <div class="form">
+              <form method="" html="{:multipart=>true}" data-remote="true" action="" accept-charset="UTF-8">
+                <input id="name" class="form-control" type="text" placeholder="Имя" name="name" required="required">
+                <textarea rows="3" id="desc" class="form-control" type="text" placeholder="Описание" name="desc" required="required"></textarea>
+                <center><input id="date" type="date" placeholder="Дата добавления" required="required" style="margin-top: 5px;"></center>
+                <div class="form-group">
+                  <label for="mult">Мультимедия</label>
+                  <input type="file" multiple="multiple" accept=".txt,image/*">
+                  <a href="#" class="upload_files button">Загрузить файлы</a>
+                  <div class="ajax-reply"></div>
+                  <center><label for="mult" id="pos"></label></center>
+                </div>
+                <input class="btn btn-default btn-login" type="button" value="Добавить" onclick="AddKonBut()" style="margin-top: 5px;">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 </body>
 </html>
@@ -147,41 +180,19 @@ NITEM;
 <script type="text/javascript">
   $(function(){
 
-    var qwe = 1;
-
-    $('#2').on('click',function(){ 
-      $('#1').removeClass("filiz");
-      $('#3').removeClass("filiz");
-      $('#2').addClass("filiz");
-      $('#konn').empty();
-      qwe = 2;
-      getSpisok(qwe);
+    $('#add').on('click',function(){ 
+      setTimeout(function(){
+        $('#AddKonModal').modal('show');    
+      }, 230);
     });
 
-    $('#1').on('click',function(){ 
-      $('#2').removeClass("filiz");
-      $('#3').removeClass("filiz");
-      $('#1').addClass("filiz");
-      $('#konn').empty();
-      qwe = 1;
-      getSpisok(qwe);
-    });
-
-    $('#3').on('click',function(){ 
-      $('#1').removeClass("filiz");
-      $('#2').removeClass("filiz");
-      $('#3').addClass("filiz");
-      $('#konn').empty();
-      qwe = 3;
-      getSpisok(qwe);
-    });
-
-    $('body').on('click','.gol',function(){ 
+    $('.del').on('click',function(){ 
       var idi = $(this).attr('id');
-      goloS(idi);
+      delKon(idi);
       $('#konn').empty();
-      getSpisok(qwe);
+      getSpisok(1);
     });
+
   });
 
   var getSpisok = function(param) {
@@ -190,13 +201,13 @@ NITEM;
         if (xhttp.readyState==4 && xhttp.status==200) {
           var response = $.parseJSON(xhttp.responseText);
           for(i=0;i<response.length;i++) {
-            var r = $('<div class="card"><div class="photo"><img src="../uploads/'+response[i]["id"]+'.jpg"></div><div class="txt"><div class="name">'+response[i]["name"]+'</div><div class="disc">'+response[i]["text"]+'</div><div class="data">Дата регистрации: '+response[i]["oth"]+' Количество голосов: <b>'+response[i]["kolgol"]+'</b></div></div><div class="gol" id="'+response[i]["id"]+'">Голосовать!</div></div>');
+            var r = $('<div class="card"><div class="photo"><img src="uploads/'+response[i]["id"]+'.jpg"></div><div class="txt"><div class="name">'+response[i]["name"]+'</div><div class="disc">'+response[i]["text"]+'</div><div class="data">Дата регистрации: '+response[i]["oth"]+' Количество голосов: <b>'+response[i]["kolgol"]+'</b></div></div><div class="red" id="'+response[i]["id"]+'">Редактировать</div><div class="del" id="'+response[i]["id"]+'">Удалить</div></div>');
             $("#konn").append(r);
           }
           
         }
       };
-      obj = JSON.stringify({x:param,action:"getSpis"});
+      obj = JSON.stringify({x:param,action:"getSpis1"});
       xhttp.open("POST", '../inc/ajax.php', true);
       xhttp.setRequestHeader("Content-Type","application/json");
       xhttp.send(obj);
@@ -209,27 +220,6 @@ NITEM;
       xhttp.setRequestHeader("Content-Type","application/json");
       xhttp.send(obj);
   }
-
-  $("#logout").on('click',function(){
-            location.reload('http://online.ru/');
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function(){
-                if (xhttp.readyState==4 && xhttp.status==200) {
-                    var response = xhttp.responseText;                  
-                    if(response=="done") {
-                        $('.error').addClass('alert alert-danger').html("Вы вышли из своего кабинета!");
-                        setTimeout(timeoutFunc,2000);
-                        prs = true;
-                    }
-                    else
-                        console.log(222);
-                }
-            };
-                obj = JSON.stringify({action:"logout"});
-                xhttp.open("POST", '../inc/ajax.php', true);
-                xhttp.setRequestHeader("Content-Type","application/json");
-                xhttp.send(obj);
-    }); 
 
   $("#logout").on('click',function(){
             var xhttp = new XMLHttpRequest();
@@ -251,4 +241,128 @@ NITEM;
                 xhttp.setRequestHeader("Content-Type","application/json");
                 xhttp.send(obj);
     }); 
+
+  var files; // переменная. будет содержать данные файлов
+var nam;
+var multz;
+
+// заполняем переменную данными, при изменении значения поля file 
+$('input[type=file]').on('change', function(){
+  files = this.files;
+});
+
+// обработка и отправка AJAX запроса при клике на кнопку upload_files
+$('.upload_files').on( 'click', function( event ){
+
+  event.stopPropagation(); // остановка всех текущих JS событий
+  event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
+
+  // ничего не делаем если files пустой
+  if( typeof files == 'undefined' ) return;
+
+  // создадим объект данных формы
+  var data = new FormData();
+
+  // заполняем объект данных файлами в подходящем для отправки формате
+  $.each( files, function( key, value ){
+    data.append( key, value );
+  });
+
+  // добавим переменную для идентификации запроса
+  data.append( 'my_file_upload', 1 );
+
+  // AJAX запрос
+  $.ajax({
+    url         : 'submit.php',
+    type        : 'POST', // важно!
+    data        : data,
+    cache       : false,
+    dataType    : 'json',
+    // отключаем обработку передаваемых данных, пусть передаются как есть
+    processData : false,
+    // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
+    contentType : false, 
+    // функция успешного ответа сервера
+    success     : function( respond, status, jqXHR ){
+
+      // ОК - файлы загружены
+      if( typeof respond.error === 'undefined' ){
+        // выведем пути загруженных файлов в блок '.ajax-reply'
+        var files_path = respond.files;
+        var html = '';
+        $.each( files_path, function( key, val ){
+           html += val +'<br>';
+           img1 = new Image (200,200);
+          img1.src="../uploads/" + files[0]["name"];
+          $("#pos").html('');
+          $("#pos").append(img1);
+        } )
+
+        $('.ajax-reply').html( html );
+        nam = files_path;
+        var multz = nam[0];
+        multz = multz.substr(multz.lastIndexOf('.')+1); 
+        console.log(multz);
+      }
+      // ошибка
+      else {
+        console.log('ОШИБКА: ' + respond.error );
+      }
+    },
+    // функция ошибки ответа сервера
+    error: function( jqXHR, status, errorThrown ){
+      console.log( 'ОШИБКА AJAX запроса: ' + status, jqXHR );
+    }
+
+  });
+
+});
+
+var AddKonBut = function() {
+  name = $("#name").val().replace(/(<.*?>)/g, "");
+  desc = $("#desc").val().replace(/(<.*?>)/g, "");
+  date = $("#date").val();
+  $('.error').empty();
+  if (name == "" || desc == "" || date == ""){
+    $('.error').addClass('alert alert-danger').html("Не все поля заполнены!");
+  }
+  else{
+    var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if (xhttp.readyState==4 && xhttp.status==200) {
+          var response = xhttp.responseText;
+          if(response) {
+            $('.error').addClass('alert alert-success').html("Конкурсант добавлен");
+            $('#konn').empty();
+            getSpisok(1);
+          } else {
+            $('.error').addClass('alert alert-danger').html("Ошибка добавления!");
+          }
+          
+        }
+      };
+      if(true) {
+        obj = JSON.stringify({action:"add",name:name,desc:desc,date:date});
+        xhttp.open("POST", '../inc/ajax.php', true);
+        xhttp.setRequestHeader("Content-Type","application/json");
+        xhttp.send(obj);
+      } else {
+        //alert("Ошибка!");
+      }
+  }
+  
+  }
+
+  var delKon = function(param) {
+    var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if (xhttp.readyState==4 && xhttp.status==200) {
+          
+        }
+      };
+      obj = JSON.stringify({id:param,action:"del"});
+      xhttp.open("POST", '../inc/ajax.php', true);
+      xhttp.setRequestHeader("Content-Type","application/json");
+      xhttp.send(obj);
+  }
 </script>

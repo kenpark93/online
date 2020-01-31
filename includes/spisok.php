@@ -72,7 +72,7 @@ $kon=getKon($keyf);
       echo <<<NITEM
 
       <div class="card">
-      <div class="photo"><img src="../uploads/{$card["id"]}.jpg"></div>
+      <div class="photo"><img src="uploads/{$card["id"]}.jpg"></div>
       <div class="txt">
         <div class="name">{$card["name"]}</div>
         <div class="disc">{$card["text"]}</div>
@@ -199,7 +199,7 @@ NITEM;
         if (xhttp.readyState==4 && xhttp.status==200) {
           var response = $.parseJSON(xhttp.responseText);
           for(i=0;i<response.length;i++) {
-            var r = $('<div class="card"><div class="photo"><img src="../uploads/'+response[i]["id"]+'.jpg"></div><div class="txt"><div class="name">'+response[i]["name"]+'</div><div class="disc">'+response[i]["text"]+'</div><div class="data">Дата регистрации: '+response[i]["oth"]+' Количество голосов: <b>'+response[i]["kolgol"]+'</b></div></div><div class="gol" id="'+response[i]["id"]+'">Голосовать!</div></div>');
+            var r = $('<div class="card"><div class="photo"><img src="uploads/'+response[i]["id"]+'.jpg"></div><div class="txt"><div class="name">'+response[i]["name"]+'</div><div class="disc">'+response[i]["text"]+'</div><div class="data">Дата регистрации: '+response[i]["oth"]+' Количество голосов: <b>'+response[i]["kolgol"]+'</b></div></div><div class="gol" id="'+response[i]["id"]+'">Голосовать!</div></div>');
             $("#konn").append(r);
           }
           

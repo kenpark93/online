@@ -21,6 +21,10 @@ function showLoginForm(){
      $('.error').removeClass('alert alert-danger').html(''); 
 }
 
+function showAddKon(){
+    $('#AddKonModal').fadeIn('fast'); 
+}
+
 function openLoginModal(){
     showLoginForm();
     setTimeout(function(){
@@ -138,26 +142,6 @@ function timeoutFunc(){
         }
     }
 
-var zap = function(us) {
-        var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function(){
-                if (xhttp.readyState==4 && xhttp.status==200) {
-                    var response =$.parseJSON(xhttp.responseText);                  
-                    if(response) {
-                        console.log(response);
-                        var r = $('$(".calendarob").fullCalendar({eventSources: [{events : '+response+',color : "#0EB6A2",textColor : "#fff"}],height: 450});');
-                        $(".content").append(r);
-                    }
-                    else
-                        console.log(response);
-                }
-                
-            };
-                obj = JSON.stringify({action:"zap",id:us});
-                xhttp.open("POST", '../inc/ajax.php', true);
-                xhttp.setRequestHeader("Content-Type","application/json");
-                xhttp.send(obj);
-    }
 
 
 

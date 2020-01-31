@@ -315,3 +315,27 @@ body {
 .filiz{
   background-color: white;
 }
+
+.red{
+  border: 2px solid black; 
+  border-radius: 5px;
+  width: 100px;
+  padding: 10px 0;
+  float: right;
+  margin-top: 20px;
+  margin-right: 30px;
+  cursor: pointer;
+  background-color: #32a8a2;
+}
+
+.del{
+  border: 2px solid black; 
+  border-radius: 5px;
+  width: 100px;
+  padding: 10px;
+  float: right;
+  margin-top: 20px;
+  margin-right: 30px;
+  cursor: pointer;
+  background-color: #ad2c15;
+}

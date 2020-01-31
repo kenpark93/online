@@ -39,6 +39,31 @@ function getKon($keyf)
 }
 }
 
+function getKonAd($keyf)
+{
+
+    {
+    global $db_param;
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+        $query = "SELECT id, name, text, oth, kolgol FROM konkurs order by name asc";
+        $result = mysqli_query($conn, $query);
+    if ( mysqli_num_rows($result) > 0) {
+        $housesInfo=array();
+        while($hi=mysqli_fetch_array($result))
+           $housesInfo[]=$hi;
+        mysqli_free_result($result);
+        return $housesInfo;}
+
+
+      return null;
+
+    }
+    return null;
+
+}
+}
+
 function getKon1($json)
 {
     $keyf=$json->x;
@@ -55,6 +80,39 @@ function getKon1($json)
     $conn = connect_db($db_param);
     if ($conn != null) {
         $query = "SELECT id, name, text, oth, kolgol FROM konkurs order by $filter limit 5";
+        $result = mysqli_query($conn, $query);
+    if ( mysqli_num_rows($result) > 0) {
+        $housesInfo=array();
+        while($hi=mysqli_fetch_array($result))
+           $housesInfo[]=$hi;
+        mysqli_free_result($result);
+        return $housesInfo;}
+
+
+      return null;
+
+    }
+    return null;
+
+}
+}
+
+function getKon2($json)
+{
+    $keyf=$json->x;
+
+    if ($keyf == 1)
+        $filter = "name asc";
+    if ($keyf == 2)
+        $filter = "oth desc";
+    if ($keyf == 3)
+        $filter = "kolgol desc";
+
+    {
+    global $db_param;
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+        $query = "SELECT id, name, text, oth, kolgol FROM konkurs order by $filter";
         $result = mysqli_query($conn, $query);
     if ( mysqli_num_rows($result) > 0) {
         $housesInfo=array();
@@ -144,6 +202,52 @@ function saveUser($json)
         $stmt->close();
         return $res;
     }
+    return false;
+
+}
+
+function addZap($json)
+{
+    global $db_param;
+
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+        if(!($stmt=$conn->prepare("insert into konkurs (name,text,oth,kolgol) values(?,?,?,0)"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('sss',$a,$b,$c)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $a=$json->name;
+        $b=$json->desc;
+        $c=$json->date; 
+        $res =  $stmt->execute();       
+        $stmt->close();
+        return $res;
+    }
+    return false;
+
+}
+
+function delKu($json)
+{
+    global $db_param;
+
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+            if(!($stmt=$conn->prepare("delete from konkurs where id=?"))) {
+                echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+            }
+            if(!$stmt->bind_param('d',$b)) {
+                echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+            }
+            $b=$json->id;
+
+            $res =  $stmt->execute();       
+            $stmt->close();
+            return $res;
+    }
+
     return false;
 
 }
@@ -336,29 +440,6 @@ function editEv($json)
         $stmt->close();
         return $res;
     }
-    return false;
-
-}
-
-function delEv($json)
-{
-    global $db_param;
-
-    $conn = connect_db($db_param);
-    if ($conn != null) {
-            if(!($stmt=$conn->prepare("delete from sub where id=?"))) {
-                echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
-            }
-            if(!$stmt->bind_param('d',$b)) {
-                echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
-            }
-            $b=$json->id;
-
-            $res =  $stmt->execute();       
-            $stmt->close();
-            return $res;
-    }
-
     return false;
 
 }
