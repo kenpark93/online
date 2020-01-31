@@ -26,6 +26,10 @@ if(isset($_SESSION["idUser"]))
         {
           echo "<li><a href='spisok.php'>Список конкурсантов</a></li>";
         }
+        if($_SESSION["idUser"] == 1)
+            {
+              echo "<li><a href='panel.php'>Работа с конкурсантами</a></li>";
+            }
       ?>
       <li class="active"><a href="about.php">О системе</a></li>
     </ul>
@@ -55,10 +59,12 @@ if(isset($_SESSION["idUser"]))
 Предусмотреть функцию подавления накручивания счетчика одним и тем же посетителем, не давая ему возможность голосовать чаще, чем один раз в сутки.</h3>
   </div>
 
-<div class="footer">
+ <div class="footer">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
     <a href="http://www.volpi.ru/" target="_blank"> Разработано в ВПИ</a> Иванов В.
   </div>
+
+</div>
 <div class="modal fade login" id="loginModal">
   <div class="modal-dialog login animated">
     <div class="modal-content">
@@ -72,7 +78,7 @@ if(isset($_SESSION["idUser"]))
             <div class="error"></div>
             <div class="form loginBox">
               <form method="" action="" accept-charset="UTF-8">
-                <input id="email" class="form-control" type="text" placeholder="Email" name="email" required="required">
+                <input id="login" class="form-control" type="text" placeholder="Login" name="login" required="required">
                 <input id="password" class="form-control" type="password" placeholder="Пароль" name="password" required="required">
                 <input class="btn btn-default btn-login" type="button" value="Авторизоваться" onclick="loginAjax()">
               </form>
@@ -81,12 +87,12 @@ if(isset($_SESSION["idUser"]))
         </div>
         <div class="box">
           <div class="content registerBox" style="display:none;">
-            <div class="form">
+            <div class="form" id="regreg">
               <form method="" html="{:multipart=>true}" data-remote="true" action="" accept-charset="UTF-8">
-                <input id="reg_email" class="form-control" type="text" placeholder="Email" name="email" required="required">
+                <input id="reg_login" class="form-control" type="text" placeholder="Login" name="login" required="required">
                 <input id="reg_password" class="form-control" type="password" placeholder="Пароль" name="password" required="required">
                 <input id="password_confirmation" class="form-control" type="password" placeholder="Повторить пароль" name="password_confirmation" required="required">
-                <input class="btn btn-default btn-register" type="button" value="Создать аккаунт" name="commit">
+                <input class="btn btn-default btn-register" type="button" value="Создать аккаунт" onclick="regAjax()">
               </form>
             </div>
           </div>
@@ -106,6 +112,148 @@ if(isset($_SESSION["idUser"]))
     </div>
   </div>
 </div>
-</div>
-</body>
-</html>
+<script type="text/javascript">
+
+  function regAjax(){
+        login = $("#reg_login").val().replace(/(<.*?>)/g, "");
+        pass = $("#reg_password").val().replace(/(<.*?>)/g, "");
+        conf_pass = $("#password_confirmation").val().replace(/(<.*?>)/g, "");
+        var bValid=true;                         //Тут проверка начинается регистрации
+    //Проверка логина
+      var iLog=$("#reg_login");
+      var reLog = /^[a-zA-z0-9_]{1,10}$/;
+      if(!reLog.test(login)) {
+          $('.error').addClass('alert alert-danger').html("Логин не верен!");
+          $('input[type="password"]').val('');
+             setTimeout( function(){ 
+                $('#loginModal .modal-dialog').removeClass('shake'); 
+    }, 1000 ); 
+          iLog.css("border-color", "red");
+          bValid=false;
+
+      }
+      else{
+          iLog.css("border-color","#ccc");
+        
+      }
+    
+    //Проверка пароля. У пароля и логина совпадают регулярные выражения
+    var iPas=$("#reg_password");
+    if(!reLog.test(pass)) {
+        $('.error').addClass('alert alert-danger').html("Ошибка в пароле!");
+        $('input[type="password"]').val('');
+             setTimeout( function(){ 
+                $('#loginModal .modal-dialog').removeClass('shake'); 
+    }, 1000 ); 
+        iPas.css("border-color", "red");
+        bValid=false;
+    }
+    else
+    {
+        iPas.css("border-color","#ccc");
+    }
+        
+
+    //Проверка подтверждения пароля
+    var iConfPas=$("#password_confirmation");
+    if(conf_pass!=pass) {
+        $('.error').addClass('alert alert-danger').html("Пароли не совпадают!");
+        $('input[type="password"]').val('');
+             setTimeout( function(){ 
+                $('#loginModal .modal-dialog').removeClass('shake'); 
+    }, 1000 ); 
+        iConfPas.css("border-color", "red");
+        bValid=false;
+    }
+    else
+    {
+        iConfPas.css("border-color","#ccc");
+    }
+          
+    if (bValid==true)
+    {
+        checkUser();
+        
+    }
+}
+
+var checkUser = function() {
+        var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (xhttp.readyState==4 && xhttp.status==200) {
+                  console.log(xhttp.responseText);
+                    var response = $.parseJSON(xhttp.responseText);
+                    if(response==null || response.length<5) {
+                        regUser();
+                    } else {
+                        $('.error').addClass('alert alert-danger').html("Такой логин уже существует!");
+             $('input[type="password"]').val('');
+             setTimeout( function(){ 
+                $('#loginModal .modal-dialog').removeClass('shake'); 
+    }, 1000 ); 
+                    }
+                    
+                }
+            };
+            if(true) {
+                obj = JSON.stringify({action:"check",log:login});
+                xhttp.open("POST", '../inc/ajax.php', true);
+                xhttp.setRequestHeader("Content-Type","application/json");
+                xhttp.send(obj);
+            } else {
+
+            }
+    }
+
+        var regUser = function() {
+    var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if (xhttp.readyState==4 && xhttp.status==200) {
+          var response = xhttp.responseText;//$.parseJSON(xhttp.responseText);
+          if(response) {
+            $('.error').addClass('alert alert-success').html("Вы зарегистрировались!");
+             $('#regreg').empty();
+             setTimeout( function(){ 
+                $('#loginModal .modal-dialog').removeClass('shake'); 
+    }, 1000 ); 
+          } else {
+            $('.error').addClass('alert alert-danger').html("Ошибка регистрации!");
+             $('input[type="password"]').val('');
+             setTimeout( function(){ 
+                $('#loginModal .modal-dialog').removeClass('shake'); 
+    }, 1000 ); 
+          }
+          
+        }
+      };
+      if(true) {
+        obj = JSON.stringify({action:"reg",log:login,pas:pass});
+        xhttp.open("POST", '../inc/ajax.php', true);
+        xhttp.setRequestHeader("Content-Type","application/json");
+        xhttp.send(obj);
+      } else {
+        //alert("Ошибка!");
+      }
+  }
+
+  $("#logout").on('click',function(){
+            location.reload();
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (xhttp.readyState==4 && xhttp.status==200) {
+                    var response = xhttp.responseText;                  
+                    if(response=="done") {
+                        $('.error').addClass('alert alert-danger').html("Вы вышли из своего кабинета!");
+                        setTimeout(timeoutFunc,2000);
+                        prs = true;
+                    }
+                    else
+                        console.log(222);
+                }
+            };
+                obj = JSON.stringify({action:"logout"});
+                xhttp.open("POST", '../inc/ajax.php', true);
+                xhttp.setRequestHeader("Content-Type","application/json");
+                xhttp.send(obj);
+    }); 
+</script>
