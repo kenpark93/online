@@ -69,10 +69,10 @@ $kon=getKonAd($keyf);
 
       echo <<<NITEM
 
-      <div class="card">
+      <div class="card" id="{$card["id"]}">
       <div class="photo"><img src="uploads/{$card["id"]}.jpg"></div>
       <div class="txt">
-        <div class="name" value="{$card["name"]}">{$card["name"]}</div>
+        <div class="name">{$card["name"]}</div>
         <div class="disc">{$card["text"]}</div>
         <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: <b>{$card["kolgol"]}</b></div>
       </div>
@@ -211,6 +211,10 @@ NITEM;
 </html>
 
 <script type="text/javascript">
+  var name = '';
+  var desc = '';
+  var date = '';
+
   $(function(){
 
     $('#add').on('click',function(){ 
@@ -219,20 +223,17 @@ NITEM;
       }, 230);
     });
 
-    $('.del').on('click',function(){ 
+    $('body').on('click','.del',function(){
       var idi = $(this).attr('id');
       delKon(idi);
       $('#konn').empty();
       getSpisok(1);
     });
 
-    $('.red').on('click',function(){ 
+    $('body').on('click','.red',function(){
       var idi = $(this).attr('id');
       localStorage.setItem('var', idi);
-      name = $(idi,".name").text();
-      desc = $(idi,".disc").text();
-      date = $(idi,".data").text();
-      console.log(name);
+      //getCard(idi);
       $("#nameR").val(name);
       $("#descR").val(desc);
       $("#dateR").val(date);
@@ -256,6 +257,23 @@ NITEM;
         }
       };
       obj = JSON.stringify({x:param,action:"getSpis1"});
+      xhttp.open("POST", '../inc/ajax.php', true);
+      xhttp.setRequestHeader("Content-Type","application/json");
+      xhttp.send(obj);
+  }
+
+  var getCard = function(param) {
+    var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if (xhttp.readyState==4 && xhttp.status==200) {
+          var response = $.parseJSON(xhttp.responseText);
+          console.log(response[name]);
+            name = response[name];
+            desc = response[text];
+            date = response[oth];
+        }
+      };
+      obj = JSON.stringify({x:param,action:"getCard"});
       xhttp.open("POST", '../inc/ajax.php', true);
       xhttp.setRequestHeader("Content-Type","application/json");
       xhttp.send(obj);
@@ -417,7 +435,8 @@ var AddKonBut = function() {
         if (xhttp.readyState==4 && xhttp.status==200) {
           var response = xhttp.responseText;
           if(response) {
-            $('.error').addClass('alert alert-success').html("Конкурсант добавлен");
+            console.log(response);
+            $('.error').addClass('alert alert-success').html("Конкурсант отредактирован");
             $('#konn').empty();
             getSpisok(1);
           } else {

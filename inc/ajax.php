@@ -38,6 +38,10 @@ if($action=="red"){
 	$response = redZap($json);
 	echo json_encode($response);
 }
+if($action=="getCard"){
+	$response = getCard($json);
+	echo json_encode($response);
+}
 
 
 

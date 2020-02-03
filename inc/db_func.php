@@ -130,10 +130,46 @@ function getKon2($json)
 }
 }
 
+function getCard($json)
+{
+    
+global $db_param;
+    $conn = connect_db($db_param);
+
+    if ($conn != null) {
+        if(!($stmt=$conn->prepare("SELECT name, text, oth FROM konkurs where id =?"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('d',$l)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $l=$json->x;
+        if(!$stmt->execute()) {
+            echo "Не удалось выполнить запрос: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if(!($res=$stmt->get_result())) {
+            echo "Не удалось получить результат: (" . $stmt->errno . ") " . $stmt->error;
+        } else {
+            if($res>0){
+                $gradInfo=array();
+                while($bi=mysqli_fetch_array($res))
+                    $gradInfo[]=$bi;                
+            } else {
+                return null;
+            }
+        }
+        $stmt->close();
+        return json_encode($gradInfo);
+    }
+
+}
+
 function golos($json)
 {
 
     global $db_param;
+
+    $today = date("Y-m-d");
 
     $conn = connect_db($db_param);
     if ($conn != null) {
@@ -261,7 +297,7 @@ function redZap($json)
         if(!($stmt=$conn->prepare("update konkurs set name=?,text=?,oth=? where id=?"))) {
             echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
         }
-        if(!$stmt->bind_param('sss',$a,$b,$c)) {
+        if(!$stmt->bind_param('sssd',$a,$b,$c,$d)) {
             echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
         }
         $a=$json->name;
