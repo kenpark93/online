@@ -72,7 +72,7 @@ $kon=getKonAd($keyf);
       <div class="card">
       <div class="photo"><img src="uploads/{$card["id"]}.jpg"></div>
       <div class="txt">
-        <div class="name">{$card["name"]}</div>
+        <div class="name" value="{$card["name"]}">{$card["name"]}</div>
         <div class="disc">{$card["text"]}</div>
         <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: <b>{$card["kolgol"]}</b></div>
       </div>
@@ -196,7 +196,7 @@ NITEM;
                   <div class="ajax-reply"></div>
                   <center><label for="mult" id="pos"></label></center>
                 </div>
-                <input class="btn btn-default btn-login" type="button" value="Добавить" onclick="AddKonBut()" style="margin-top: 5px;">
+                <input class="btn btn-default btn-login" type="button" value="Редактировать" onclick="RedKonBut()" style="margin-top: 5px;">
               </form>
             </div>
           </div>
@@ -228,9 +228,11 @@ NITEM;
 
     $('.red').on('click',function(){ 
       var idi = $(this).attr('id');
-      name = $("#name").val().replace(/(<.*?>)/g, "");
-      desc = $("#desc").val().replace(/(<.*?>)/g, "");
-      date = $("#date").val();
+      localStorage.setItem('var', idi);
+      name = $(idi,".name").text();
+      desc = $(idi,".disc").text();
+      date = $(idi,".data").text();
+      console.log(name);
       $("#nameR").val(name);
       $("#descR").val(desc);
       $("#dateR").val(date);
@@ -378,6 +380,7 @@ var AddKonBut = function() {
         if (xhttp.readyState==4 && xhttp.status==200) {
           var response = xhttp.responseText;
           if(response) {
+            console.log(response);
             $('.error').addClass('alert alert-success').html("Конкурсант добавлен");
             $('#konn').empty();
             getSpisok(1);
@@ -389,6 +392,42 @@ var AddKonBut = function() {
       };
       if(true) {
         obj = JSON.stringify({action:"add",name:name,desc:desc,date:date});
+        xhttp.open("POST", '../inc/ajax.php', true);
+        xhttp.setRequestHeader("Content-Type","application/json");
+        xhttp.send(obj);
+      } else {
+        //alert("Ошибка!");
+      }
+  }
+  
+  }
+
+  var RedKonBut = function() {
+  name = $("#nameR").val().replace(/(<.*?>)/g, "");
+  desc = $("#descR").val().replace(/(<.*?>)/g, "");
+  date = $("#dateR").val();
+  id = localStorage.getItem('var');
+  $('.error').empty();
+  if (name == "" || desc == "" || date == ""){
+    $('.error').addClass('alert alert-danger').html("Не все поля заполнены!");
+  }
+  else{
+    var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if (xhttp.readyState==4 && xhttp.status==200) {
+          var response = xhttp.responseText;
+          if(response) {
+            $('.error').addClass('alert alert-success').html("Конкурсант добавлен");
+            $('#konn').empty();
+            getSpisok(1);
+          } else {
+            $('.error').addClass('alert alert-danger').html("Ошибка добавления!");
+          }
+          
+        }
+      };
+      if(true) {
+        obj = JSON.stringify({action:"red",name:name,desc:desc,date:date,id:id});
         xhttp.open("POST", '../inc/ajax.php', true);
         xhttp.setRequestHeader("Content-Type","application/json");
         xhttp.send(obj);

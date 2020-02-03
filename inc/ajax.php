@@ -34,6 +34,10 @@ if($action=="del"){
 	$response = delKu($json);
 	echo $response;
 }
+if($action=="red"){
+	$response = redZap($json);
+	echo json_encode($response);
+}
 
 
 

@@ -252,6 +252,29 @@ function delKu($json)
 
 }
 
+function redZap($json)
+{
+    global $db_param;
+
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+        if(!($stmt=$conn->prepare("update konkurs set name=?,text=?,oth=? where id=?"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('sss',$a,$b,$c)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $a=$json->name;
+        $b=$json->desc;
+        $c=$json->date; 
+        $d=$json->id;
+        $res =  $stmt->execute();       
+        $stmt->close();
+        return $res;
+    }
+    return false;
+
+}
 
 
 class myClass {
