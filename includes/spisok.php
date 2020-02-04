@@ -8,6 +8,13 @@ if(isset($_SESSION["idUser"]))
         }
 $keyf = 1;
 $kon=getKon($keyf);
+$ob = obnul($_SESSION["idUser"]);
+$ob1 =  $ob[15] * 10 + $ob[16];
+$day = date("d");
+if ($ob1 < $day){
+  obnulda($_SESSION["idUser"]);
+}
+$proverka=prov($_SESSION["idUser"]);
 ?>
 <!DOCTYPE html>
 <html>
@@ -79,7 +86,7 @@ $kon=getKon($keyf);
         <div class="data">Дата регистрации: {$card["oth"]} Количество голосов: <b>{$card["kolgol"]}</b></div>
       </div>
 NITEM;
-      if(isset($_SESSION["idUser"]))
+      if($proverka[6] > 0)
         {
           echo "<div class='gol' id='{$card["id"]}'>Голосовать!</div>";
           echo "</div>";
@@ -188,6 +195,8 @@ NITEM;
     $('body').on('click','.gol',function(){ 
       var idi = $(this).attr('id');
       goloS(idi);
+      if (localStorage.getItem('idu') != 1)
+        otmet(localStorage.getItem('idu'));
       $('#konn').empty();
       getSpisok(qwe);
     });
@@ -213,7 +222,22 @@ NITEM;
 
   var goloS = function(param) {
     var xhttp = new XMLHttpRequest();
+    location.reload();
       obj = JSON.stringify({x:param,action:"golos"});
+      xhttp.open("POST", '../inc/ajax.php', true);
+      xhttp.setRequestHeader("Content-Type","application/json");
+      xhttp.send(obj);
+  }
+
+  var otmet = function(param) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function(){
+        if (xhttp.readyState==4 && xhttp.status==200) {
+          var response = $.parseJSON(xhttp.responseText);
+          console.log(response);
+        }
+      };
+      obj = JSON.stringify({x:param,action:"otmet"});
       xhttp.open("POST", '../inc/ajax.php', true);
       xhttp.setRequestHeader("Content-Type","application/json");
       xhttp.send(obj);

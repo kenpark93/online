@@ -39,6 +39,40 @@ function getKon($keyf)
 }
 }
 
+function prov($keyf)
+{
+    
+global $db_param;
+    $conn = connect_db($db_param);
+
+    if ($conn != null) {
+        if(!($stmt=$conn->prepare("SELECT golos FROM users where id =?"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('d',$l)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $l=$keyf;
+        if(!$stmt->execute()) {
+            echo "Не удалось выполнить запрос: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if(!($res=$stmt->get_result())) {
+            echo "Не удалось получить результат: (" . $stmt->errno . ") " . $stmt->error;
+        } else {
+            if($res>0){
+                $gradInfo=array();
+                while($bi=mysqli_fetch_array($res))
+                    $gradInfo[]=$bi;                
+            } else {
+                return null;
+            }
+        }
+        $stmt->close();
+        return json_encode($gradInfo);
+    }
+
+}
+
 function getKonAd($keyf)
 {
 
@@ -169,8 +203,6 @@ function golos($json)
 
     global $db_param;
 
-    $today = date("Y-m-d");
-
     $conn = connect_db($db_param);
     if ($conn != null) {
         if(!($stmt=$conn->prepare("update konkurs set kolgol = kolgol + 1 where id=?"))) {
@@ -185,6 +217,82 @@ function golos($json)
         return $res;
     }
     return false;
+}
+
+function otmet($json)
+{
+
+    global $db_param;
+
+    $today = date("Y-m-d");
+
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+        if(!($stmt=$conn->prepare("update users set golos = 0, datgol = CURDATE() where id=?"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('d',$i)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $i=$json->x;  
+        $res =  $stmt->execute();       
+        $stmt->close();
+        return $res;
+    }
+    return false;
+}
+
+function obnulda($json)
+{
+
+    global $db_param;
+
+    $conn = connect_db($db_param);
+    if ($conn != null) {
+        if(!($stmt=$conn->prepare("update users set golos = 1, datgol = CURDATE() where id=?"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('d',$i)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $i=$json;  
+        $res =  $stmt->execute();       
+        $stmt->close();
+        return $res;
+    }
+    return false;
+}
+
+function obnul($keyf)
+{
+    global $db_param;
+    $conn = connect_db($db_param);
+
+    if ($conn != null) {
+        if(!($stmt=$conn->prepare("SELECT datgol FROM users where id =?"))) {
+            echo "Не удалось подготовить запрос: (" . $conn->errno . ") " . $conn->error;
+        }
+        if(!$stmt->bind_param('d',$l)) {
+            echo "Не удалось привязать параметры: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        $l=$keyf;
+        if(!$stmt->execute()) {
+            echo "Не удалось выполнить запрос: (" . $stmt->errno . ") " . $stmt->error;
+        }
+        if(!($res=$stmt->get_result())) {
+            echo "Не удалось получить результат: (" . $stmt->errno . ") " . $stmt->error;
+        } else {
+            if($res>0){
+                $gradInfo=array();
+                while($bi=mysqli_fetch_array($res))
+                    $gradInfo[]=$bi;                
+            } else {
+                return null;
+            }
+        }
+        $stmt->close();
+        return json_encode($gradInfo);
+    }
 }
 
 function checkUser($json)

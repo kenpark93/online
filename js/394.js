@@ -101,6 +101,8 @@ var authUser = function(log,pass) {
                     var response =$.parseJSON(xhttp.responseText);
                     if(response!="") {
                         id = response[0]["id"];
+                        localStorage.setItem('idu', id);
+                        console.log(id)
                         openSession();
                     } else {
                         shakeModalEr();

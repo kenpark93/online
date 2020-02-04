@@ -18,6 +18,10 @@ if($action=="golos"){
 	$response = golos($json);
 	echo json_encode($response);
 }
+if($action=="otmet"){
+	$response = otmet($json);
+	echo $response;
+}
 if($action=="check"){
 	$response = checkUser($json);
 	echo json_encode($response);
